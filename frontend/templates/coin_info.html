@@ -1,0 +1,14 @@
+<ol>
+<!--    <li>-->
+<!--        <b>Rank:</b> {{ coin.rank }}-->
+<!--    </li>-->
+    <li>
+        <b>Price usd:</b> {{ coin.price_usd | floatformat:'-2'}}
+    </li>
+    <li>
+        <b>Volume usd 24h:</b> {{ coin.volume_usd_24h | floatformat:'-2'}}
+    </li>
+    <li>
+        <b>Available supply:</b> {{ coin.available_supply | floatformat:'-2'}}
+    </li>
+</ol>

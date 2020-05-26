@@ -1,0 +1,154 @@
+{% extends 'trade/base.html' %}
+{% load coins humanize summary_balance static tz %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/highcharts.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col s12 l10 m12 push-l1">
+            <h1 class="center">Summary Information</h1>
+            <h5 class="center green-text text-darken-3">Total balance {{ user|get_user_summaries_btc|floatformat:"-8" }}
+                BTC
+                / {{ user|get_user_summaries_usd|floatformat:"-2" }} USD
+                <small>({% now "DATETIME_FORMAT" %})</small>
+            </h5>
+            <ul class="collapsible popout" data-collapsible="accordion">
+                {% if ue %}
+                    <table class="exchange z-depth-1">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                        <tr class="exchange-header">
+                            <th>Exchange</th>
+                            <th>Total BTC</th>
+                            <th>USD Value</th>
+                            <th>Percent of total</th>
+                            <th>Is Correct</th>
+                            <th>Error</th>
+                            <th>Actions</th>
+                            <th>Is Active</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    {% for item in ue %}
+                        <li id="userexchange-{{ item.pk }}">
+                            <div class="collapsible-header">
+                                <table class="exchange">
+                                    <colgroup>
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                    </colgroup>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{ item.exchange.name }}</td>
+                                        <td>{{ item.total_btc|floatformat:"-8" }} BTC</td>
+                                        <td>{{ item.total_usd|floatformat:"-8" }} USD</td>
+                                        {% with user|get_user_summaries_usd as total_usd %}
+                                            <td>{{ item.total_usd|as_percent_of:total_usd | floatformat:"-2" }}%</td>
+                                        {% endwith %}
+                                        <td>{{ item.is_correct|yesno:"Yes,No" }}</td>
+                                        <td>{{ item.error }}</td>
+                                        <td><a href="{% url 'tradeBotSetup' pk=item.pk %}"><i
+                                                class="fa fa-cog fa-1x {{ item.is_active_script|yesno:'green-text,red-text' }}"
+                                                aria-hidden="true"></i></a></td>
+                                        <td>
+                                            <form>
+                                                {% csrf_token %}
+                                                <input type="hidden" name="user-exchange" value="{{ item.id }}">
+                                                {% if item.is_active == True %}
+                                                    <i class="fa fa-check center {% if item.is_correct %}change_status{% endif %} green-text "
+                                                       aria-hidden="true"></i>
+                                                {% else %}
+                                                    <i class="fa fa-ban center {% if item.is_correct %}change_status{% else %}api-incorrect{% endif %} red-text"
+                                                       aria-hidden="true"></i>
+                                                {% endif %}
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="collapsible-body">
+                                {% get_coins item %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% if user.is_superuser %}
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large red" href="#modal1">
+                <i class="large material-icons">playlist_add</i>
+            </a>
+        </div>
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col s12">
+                        <ul class="tabs">
+                            <li class="tab col s3 active"><a class="active" href="#exchange">Биржа</a></li>
+                        </ul>
+                    </div>
+                    <div id="exchange" class="col s12 m12 l12">
+                        <br/>
+                        <h4 class="center">Добавить биржу</h4>
+                        <br/>
+                        <p class="alert-new orange lighten-2 white-text center">Для корректной работы, добавляйте только
+                            новые ключи для бирж. Создать новые ключи можно на сайте
+                            нужной биржи.</p>
+                        <form method="post" action="{% url 'exchange' %}">
+                            {% csrf_token %}
+                            {% for f in exchange_form %}
+                                <div class="input-field">
+                                    {{ f }}
+                                    {{ f.label_tag }}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn waves-effect waves-purple red right">Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="user_comment_modal" class="modal">
+            <form id="comment-form">
+                <div class="modal-content">
+                    <h4>New user comment</h4>
+                    {% csrf_token %}
+                    <input type="hidden" name="tr_id">
+                    <div class="input-field">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea class="materialize-textarea" name="comment" id="comment" cols="30" rows="10"
+                                  required></textarea>
+                        <label for="comment">Commenting here, please</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-action waves-effect waves-green btn-flat">Agree</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script type="text/javascript" src="{% static 'js/highstock.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/exporting.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+{% endblock %}

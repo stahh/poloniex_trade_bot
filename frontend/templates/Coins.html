@@ -1,0 +1,19 @@
+{% if coins %}
+    <h4>Exchange: {{ exch.exchange }}</h4>
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Symbol</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for coin in coins %}
+            <tr>
+                <td>{{ coin.name }}</td>
+                <td>{{ coin.symbol }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

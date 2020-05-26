@@ -1,0 +1,185 @@
+{% extends 'trade/base.html' %}
+{% load static humanize get_exchange_coins get_coin_info tradeBot_filters %}
+{% block style %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'css/setup.css' %}">
+    <style>
+        body {
+            background: #dff9d6;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    {% autoescape on %}
+        <h3 class="center">Exchange: {{ user_exchange.exchange.name }}
+            <span id="exchange_id" style="visibility: hidden">{{ user_exchange.exchange.pk}}</span>
+        </h3>
+
+        <div class="switch center">
+            <label>
+                Off
+                <input id="disable-script" type="checkbox" {% if user_exchange.is_active_script %}checked{% endif %}>
+                <span class="lever"></span>
+                On
+            </label>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col l9 s12 m12">
+                <div class="graph-block hide-on-med-and-down z-depth-2">
+                    <div class="preview_coins header light-green white-text" id="preview_coins">
+                        <blockquote>
+                            <h5><b></b></h5>
+                            <span id="user_pair" style="visibility: hidden"></span>
+                        </blockquote>
+                        <div class="chart-info">
+                            <div class="chart-info-item left">
+                                <b></b>
+                            </div>
+                            <div class="chart-info-item">
+                                <span style="font-weight: bolder;" id="date"></span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div>
+                        <div>
+                            <div id="jqChart" style="width: 100%; height: 402px;">
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col s6 m6 l6">
+                            <div id="buttons-zoom" class="center">
+                                <b>Zoom</b>
+                                <div>
+                                    <button data-zoom="6" class="zoom btn waves-effect btn-mini ">6h</button>
+
+                                    <button data-zoom="24" class="zoom btn waves-effect btn-mini green">1d</button>
+                                    <button data-zoom="48" class="zoom btn waves-effect btn-mini ">2d</button>
+                                    <button data-zoom="96" class="zoom btn waves-effect btn-mini ">4d</button>
+                                    <button data-zoom="168" class="zoom btn waves-effect btn-mini ">1w
+                                    </button>
+                                    <button data-zoom="336" class="zoom btn waves-effect btn-mini ">2w
+                                    </button>
+                                    <button data-zoom="720" class="zoom btn waves-effect btn-mini ">1m
+                                    </button>
+                                    <button data-zoom="all" class="zoom btn waves-effect btn-mini ">all
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s6 m6 l6">
+                            <div id="buttons" class="center">
+                                <b>Candlestick</b>
+                                <div>
+                                    <button data-intervale="5"
+                                            class="candlestick btn waves-effect btn-mini  green">5
+                                        min
+                                    </button>
+                                    <button data-intervale="15"
+                                            class="candlestick btn waves-effect btn-mini ">15
+                                        min
+                                    </button>
+                                    <button data-intervale="30"
+                                            class="candlestick btn waves-effect btn-mini ">30
+                                        min
+                                    </button>
+                                    <button data-intervale="120"
+                                            class="candlestick btn waves-effect btn-mini ">2
+                                        hours
+                                    </button>
+                                    <button data-intervale="240"
+                                            class="candlestick btn waves-effect btn-mini ">4
+                                        hours
+                                    </button>
+                                    <button data-intervale="1440"
+                                            class="candlestick btn waves-effect btn-mini ">1
+                                        day
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                {#                <br>#}
+                {#                <div class="header green white-text z-depth-2">#}
+                {#                        <h5>Directions</h5>#}
+                {#                    </div>#}
+                {#                <div class="order_table directions_block z-depth-2">#}
+                {#                    <canvas id="directions"></canvas>#}
+                {#                </div>#}
+                <br>
+                <div class="order_table z-depth-2">
+                    <div class="header  light-green white-text">
+                        <h5 class="center">Preparing to set</h5>
+                    </div>
+                    {% include 'to_trade.html' %}
+                </div>
+                <br>
+                <div class="order_table z-depth-2">
+                    <div class="header  light-green white-text">
+                        <h5 class="center">Your orders</h5>
+                    </div>
+                    {% include 'orders.html' %}
+                </div>
+
+            </div>
+            <div class="col s12 m12 l3">
+                <div class="exchange-coins-block z-depth-2" id="user_trade_pairs">
+                    {% include 'share.html' %}
+                </div>
+                <div class="exchange-coins-block z-depth-2" id="all_coins">
+                    <input type="hidden" id="exchange" value="{{ user_exchange.pk }}">
+                    <div class="header green white-text">
+                        <h5 class="center">Exchange Coins</h5>
+                        <h6 class="center"><i class="fa fa-question-circle-o tooltipped"
+                                              data-tooltip="The script trades only in those currencies that are <br>included in the top 100 on the www.coinmarketchup.com"
+                                              data-position="top"
+                                              aria-hidden="true"></i> Where is my coin?</h6>
+                    </div>
+                    <ul class="tabs">
+                        {% for coin in active_coins %}
+                            <li class="tab col s3"><a
+                                    href="#{{ coin.symbol }}">{{ coin.symbol|upper }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="exchange-coins-block-scroll">
+                        {% for coin in active_coins %}
+                            <div id="{{ coin.symbol }}">
+                                <ul class="collapsible">
+                                    {% get_primary_pairs coin user_exchange %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="exchange-coins-block z-depth-2">
+                    <div class="header green white-text">
+                        <h5 class="center">Exchange Main Coins</h5>
+                    </div>
+                    <div class="primary-coins">
+                        {% for coin in primary_coins %}
+                            <div class="primary-coin rank z-depth-1" data-primary-coin="{{ coin.coin.pk }}">
+                                <b>{{ coin.symbol|upper }}</b>
+                                <br>
+                                {% get_user_primary_coins user_exchange coin %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endautoescape %}
+{% endblock %}
+{% block script %}
+<!--    <script type="text/javascript" src="{% static 'js/coinmarketcap.js' %}"></script>-->
+    <script type="text/javascript" src="{% static 'js/jqChart.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jqRangeSlider.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script lang="javascript" type="text/javascript" src="{% static 'js/setup.js' %}"></script>
+
+{% endblock %}

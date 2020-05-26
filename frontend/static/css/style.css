@@ -1,0 +1,291 @@
+.main-nav {
+    background: #388e3c;
+}
+
+.main-nav li {
+    border-left: 1px solid #2e7d32;
+    border-right: 1px solid #1b5e20;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.main-nav li:first-child {
+    border-left: 1px solid #2e7d32;
+}
+
+.main-nav li a {
+    color: lightgray;
+}
+
+.brand-logo img {
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.exchange {
+    width: 100%;
+    text-align: center;
+}
+
+
+.exchange th {
+    border: none;
+    color: #1e2324;
+    text-align: center;
+    background: #a5d6a7;
+    font-weight: bolder;
+}
+.user_coins td {
+    border-bottom: 1px solid #e8e0e0;
+}
+
+.workers {
+    width: 100%;
+    text-align: center;
+}
+
+.workers td{
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.workers td:last-child{
+    border-right: 1px solid gray;
+}
+
+
+.workers th {
+    border: none;
+    color: #1e2324;
+    text-align: center;
+    background: #a5d6a7;
+    font-weight: bolder;
+}
+
+.user_coins td:first-child {
+    font-weight: bolder;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+tr.balances td:last-child {
+    text-align: right;
+}
+
+.mysize {
+    font-size: 1.5rem !important;
+}
+
+.exchange-header th:nth-child(1) {
+    width: 10% !important;
+}
+
+.main-content {
+    margin-top: 30px;
+    padding: 48px 0 48px 0;
+    background-color: #e5f0e6;
+    min-height: 200px;
+}
+
+.user-info {
+    border-right: 1px solid lightgray;
+}
+
+.totalBTC {
+    font-family: Roboto, serif;
+    font-size: xx-large;
+    display: block;
+    text-align: center;
+}
+
+.wallet {
+    padding: 20px;
+    margin-bottom: 50px;
+    background: #b3d5d6;
+}
+
+.transactions-table {
+    max-width: 100%;
+    width: 100%;
+}
+
+.transactions-table thead th {
+    background: #009688;
+    color: white;
+}
+
+.transactions-table tbody td {
+    border-bottom: 1px solid grey;
+}
+
+.transactions-table tbody td:last-child {
+    word-break: break-all;
+}
+
+.transaction-type {
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.table-bordered {
+    border: 1px solid #c7ecb8;
+    border-collapse: separate;
+    *border-collapse: collapsed;
+    border-left: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border-bottom: 1px solid #c7ecb8;
+}
+
+.fa-commenting {
+    cursor: pointer;
+}
+
+.alert-new {
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    margin: 0 0 2em 0;
+}
+
+.transaction-info td {
+    border-bottom: 1px solid grey;
+}
+
+.transaction-info {
+    color: black;
+    background: white;
+    border: 1px solid white;
+    text-align: left !important;
+}
+
+.second-nav {
+    height: 26px;
+    line-height: 26px;
+}
+
+.exchange-coins {
+    border: 1px solid grey;
+    width: 80%;
+    border-spacing: 0;
+}
+
+.exchange-coins td {
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid grey
+}
+
+.exchange-coins td i {
+    cursor: pointer;
+}
+
+.rank-up, .rank-down, .primary-rank {
+    padding: 3px 5px;
+    color: white;
+}
+
+.pair {
+    background: #4caf50;
+}
+
+.unactive {
+    background: #f44336 !important;
+}
+
+.pair-share {
+    width: 80%;
+}
+
+.primary-coins {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.primary-coin {
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+}
+
+.primary-rank {
+    display: none !important;
+    cursor: pointer;
+}
+
+.rank:hover .primary-rank {
+    display: inline !important;
+}
+
+.border {
+    border: 1px solid red;
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+#buttons, #buttons-zoom {
+    padding: 10px;
+}
+
+.ui-jqchart-tooltip {
+    background: white;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+    z-index: 10;
+    border: 1px solid black;
+}
+
+.coinmarketcap-currency-widget div {
+    border-radius: 0 !important;
+}
+.coinmarketcap-currency-widget > div > div:last-child {
+    opacity: 0;
+    height: 0 !important;
+    padding: 0 !important;
+}
+
+.pair-advanced {
+    padding-bottom: 10px;
+}
+
+.pair-advanced input {
+    width: 100px;
+}
+
+.active_pair {
+    background-image: linear-gradient(#ebdf95, #fbf4c7 15%);
+    border-right: 0;
+    border-left: 0;
+}
+
+.active_pair td {
+    border-top: 1px solid #f7ab1c !important;
+    border-bottom: 1px solid #f7ab1c !important;
+}
+
+.pair_tr td{
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+}
+
+.orders td {
+    font-size: 10px;
+    padding: 0 !important;
+}
