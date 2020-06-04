@@ -4,9 +4,10 @@
 
 
 This is the crypto currency trading bot written on Python 3.6 with Web interface (Django).
-Based on [CATEd](https://github.com/OnGridSystems/CATEd)
-
-Please note: This is just a pet-project. You can use it at your own risk.
+Based on [CATEd](https://github.com/OnGridSystems/CATEd), 
+but celery + channels + Django is too slow and too resource intensive 
+combination. So, I separated it into two different parts -
+web interface and background service. 
 
 Main features:
 * View the status of exchange accounts, transactions and orders on them;
@@ -72,3 +73,4 @@ And run bot
 ```shell script
 python daemon.py
 ```
+####Please note: This is just a pet-project. You can use it at your own risk.
