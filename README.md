@@ -4,15 +4,16 @@
 
 
 This is the crypto currency trading bot written on Python 3.6 with Web interface (Django).
-Based on `CATEd<https://github.com/OnGridSystems/CATEd>`
+Based on [CATEd](https://github.com/OnGridSystems/CATEd)
+
+Please note: This is just a pet-project. You can use it at your own risk.
 
 Main features:
 * View the status of exchange accounts, transactions and orders on them;
-* Configurable buy/sell/hold logic, (allowed tokens and proportions);
 * Configurable Strict and Soft trading;
 * Keeping the balances of different tokens at the configured levels;
 
-For working with Poloniex API used `poloniex <https://github.com/Aula13/poloniex>`, but with some changes.
+For working with Poloniex API used [poloniex](https://github.com/Aula13/poloniex), with some changes.
 
 
 ## Install
@@ -27,20 +28,20 @@ git clone git@github.com:stahh/poloniex_trade_bot.git
 ```
 Go to project dir
 ```sh
-cd CATEd
+cd poloniex_trade_bot
 ```
-Create mysql databases
+Create mysql database
 ```sh
 echo "create database poloniex_trade character set utf8;" | mysql -u root -p
 ```
-And migrate
+Create tables
 ```sh
 python manage.py makemigrations
 ```
 ```sh
 python manage.py migrate
 ```
-Load initial data with some exchanges and wallets
+Load initial data with exchange
 ```sh
 python manage.py loaddata dump.json
 ```
