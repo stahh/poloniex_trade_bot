@@ -73,4 +73,4 @@ And run bot
 ```shell script
 python daemon.py
 ```
-####Please note: This is just a pet-project. You can use it at your own risk.
+**Please note: This is just a pet-project. You can use it at your own risk.**
